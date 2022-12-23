@@ -10,8 +10,6 @@ import PostCard from "../components/pieces/post/PostCard";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({ posts }) {
-  console.log("props ?? ", posts);
-
   const [view, setView] = useState("grid");
 
   return (
@@ -34,9 +32,7 @@ export default function Home({ posts }) {
 
 export const getServerSideProps = async () => {
   const res = await fetch(`${API_URL}/posts`);
-
   const posts = await res.json();
-  console.log("posts :: ", posts);
 
   return { props: { posts } };
 };

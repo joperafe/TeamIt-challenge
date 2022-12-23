@@ -1,0 +1,25 @@
+.title {
+  display: flex;
+  align-items: baseline;
+  :global(p) {
+    margin: 0 5px 0 30px;
+    font-size: small;
+  }
+}
+
+.commentsWrapper {
+  // width: 80vw;
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+  // border-top: double;
+}
+.commentsContent {
+  width: 80vw;
+  padding: 30px;
+  border-top: double;
+}
+
+.nestedComment {
+  padding-left: 30px;
+}
