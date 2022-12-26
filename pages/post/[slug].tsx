@@ -13,34 +13,6 @@ export const SinglePost = ({ post, comments }) => {
   useEffect(() => {
     setComments(comments);
   }, [comments]);
-  console.log("VALUE :: ", rootComments);
-
-  // const commentsByParentId = useMemo(() => {
-  //   const group = {};
-  //   comments.forEach((comment) => {
-  //     group[comment.parent_id] ||= [];
-  //     group[comment.parent_id].push(comment);
-  //   });
-
-  //   return group;
-  // }, [comments]);
-
-  // const [rootComments, setRootComments] = useState([]);
-  // useEffect(() => {
-  //   if (comments) {
-  //     setRootComments(comments.filter((comment) => !comment.parent_id));
-  //   }
-  // }, [comments]);
-
-  // const commentReplies = (id) => {
-  //   const replies = comments.filter((comment) => comment.parent_id === id);
-  //   console.log("here? ", id, replies);
-  //   return replies;
-  //   // .sort((a,b)=>new Date(a.date);
-  //   // or by id?
-  // };
-
-  // console.log("root comments ", rootComments);
 
   // @ Changing the url to show the slug instead of id
   // ! When reloading is trying to fetch post by slug...
@@ -67,15 +39,7 @@ export const SinglePost = ({ post, comments }) => {
         <div className={styles.commentsWrapper}>
           <div className={styles.commentsContent}>
             <h4>Comments</h4>
-            {/* {comments.length ? comments.map((comment) => <PostComment key={comment.id} comment={comment} />) : null} */}
             {rootComments?.length ? (
-              // rootComments.map((comment) => (
-              //   <PostComment key={comment.id} comment={comment}>
-              //     {commentReplies(comment.id).length
-              //       ? commentReplies(comment.id).map((reply) => <PostComment key={reply.id} comment={reply} />)
-              //       : null}
-              //   </PostComment>))
-              // repliesList={commentReplies(comment.id)}
               <div>
                 <CommentsList comments={rootComments} />
               </div>
@@ -125,8 +89,8 @@ export const getStaticProps: GetStaticProps<PageProps, ContextParams> = async (c
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   return {
-    paths: [], //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
+    paths: [],
+    fallback: "blocking",
   };
 };
 

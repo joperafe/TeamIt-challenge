@@ -1,11 +1,11 @@
 import Link from "next/link";
 import styles from "../../../styles/PostComment.module.scss";
 
-export const PostComment = ({ comment }) => {
+export const PostComment = ({ comment, children }) => {
   return (
     <div key={comment.id} className={styles.wrapper}>
       <div className={styles.header}>
-        <h4>{comment.user}</h4>
+        <h5>{comment.user}</h5>
         <p>{comment.date}</p>
       </div>
       <div className={styles.content}>
@@ -17,6 +17,7 @@ export const PostComment = ({ comment }) => {
           <div className={styles.button}>Read more</div>
         </Link>
       </div> */}
+      <div>{children}</div>
     </div>
   );
 };

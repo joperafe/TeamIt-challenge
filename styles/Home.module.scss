@@ -1,4 +1,21 @@
+.wrapper {
+  h2 {
+    padding: 0 0 3vh 10vw;
+  }
+}
+
 .listWrapper {
+  // display: flex;
+  // justify-content: center;
+}
+
+.list {
   display: flex;
   flex-direction: column-reverse;
+}
+
+.grid {
+  display: flex;
+  justify-content: center;
+  flex-flow: wrap;
 }
