@@ -1,21 +1,34 @@
 .wrapper {
   h2 {
-    padding: 0 0 3vh 10vw;
+    padding: 0 0 0 5vw;
   }
 }
 
-.listWrapper {
-  // display: flex;
-  // justify-content: center;
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.icon {
+  padding-right: 10vw;
+}
+
+.iconBtn {
+  width: fit-content;
+  float: right;
+  cursor: pointer;
 }
 
 .list {
-  display: flex;
-  flex-direction: column-reverse;
+  align-self: center;
 }
 
 .grid {
   display: flex;
   justify-content: center;
   flex-flow: wrap;
+}
+
+.emptyList {
+  text-align: center;
 }

@@ -11,7 +11,7 @@ export interface IPost {
 export interface IPostList {
   length: any;
   map(arg0: (post: any) => JSX.Element): import("react").ReactNode;
-  posts: IPost[];
+  posts: Array<IPost>;
 }
 
 export interface IComment {
@@ -24,5 +24,5 @@ export interface IComment {
 }
 
 export interface ICommentList {
-  posts: IComment[];
+  posts: Array<IComment>;
 }

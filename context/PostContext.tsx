@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/router";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { IComment, IPost } from "../types/interfaces";
 
 const PostContext = createContext<any>(null);
 
@@ -7,32 +7,31 @@ export const usePost = () => {
   return useContext(PostContext);
 };
 
-const PostProvider = ({ children }) => {
-  const [comments, setComments] = useState([]);
-  const [rootComments, setRootComments] = useState([]);
-  const [commentsByParentId, setCommentsByParentId] = useState([]);
+const PostProvider = ({ children }: { children: React.ReactNode }) => {
+  const [post, setPost] = useState<IPost>();
+  const [comments, setComments] = useState<any[]>([]);
+  const [rootComments, setRootComments] = useState<any[]>([]);
+  const [commentsByParentId, setCommentsByParentId] = useState<any[]>([]);
 
   useEffect(() => {
     if (comments) {
-      setRootComments(comments.filter((comment) => !comment.parent_id));
+      setRootComments(comments.filter((comment: IComment) => !comment.parent_id));
     }
   }, [comments]);
 
   useEffect(() => {
     const group: any = {};
     if (comments.length) {
-      comments.forEach((comment) => {
+      comments.forEach((comment: IComment) => {
         group[comment.parent_id] ||= [];
         group[comment.parent_id].push(comment);
       });
-      console.log("group ", group);
       setCommentsByParentId(group);
     }
   }, [comments]);
 
-  const getCommentReplies = (parent_id) => {
+  const getCommentReplies = (parent_id: number) => {
     if (commentsByParentId) {
-      console.log("commentsBy parent ", parent_id, commentsByParentId);
       return commentsByParentId[parent_id];
     }
     return;
@@ -41,6 +40,8 @@ const PostProvider = ({ children }) => {
   return (
     <PostContext.Provider
       value={{
+        post,
+        setPost,
         comments,
         setComments,
         rootComments,

@@ -1,18 +1,33 @@
-import { GetStaticPaths, GetStaticProps } from "next";
-import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { GetStaticPaths, GetStaticProps, PreviewData } from "next";
+import Link from "next/link";
+import { useEffect } from "react";
 import Layout from "../../components/Layout";
+import CommentForm from "../../components/pieces/post/CommentForm";
 import CommentsList from "../../components/pieces/post/CommentsList";
-import PostComment from "../../components/pieces/post/PostComment";
 import { API_URL } from "../../config";
-import { PostContext, PostProvider, usePost } from "../../context/PostContext";
+import { usePost } from "../../context/PostContext";
+import { useAsyncFn } from "../../hooks/useAsync";
+import { createComment } from "../../services/comments";
 import styles from "../../styles/SinglePost.module.scss";
+import { ICommentList, IPost } from "../../types/interfaces";
 
-export const SinglePost = ({ post, comments }) => {
-  const { setComments, rootComments } = usePost();
+export const SinglePost = ({ post, commentsFromAPI }: { post: IPost; commentsFromAPI: ICommentList }) => {
+  const { setPost, comments, setComments, rootComments } = usePost();
+  const { loading, error, execute: createCommentFn } = useAsyncFn(createComment);
+
   useEffect(() => {
-    setComments(comments);
-  }, [comments]);
+    post && setPost(post);
+    setComments(commentsFromAPI);
+  }, [post, commentsFromAPI]);
+
+  const onCreateComment = (newComment: string) => {
+    return createCommentFn({
+      postId: post.id,
+      content: newComment,
+    }).then((res: Object) => {
+      setComments([res, ...comments]);
+    });
+  };
 
   // @ Changing the url to show the slug instead of id
   // ! When reloading is trying to fetch post by slug...
@@ -23,10 +38,13 @@ export const SinglePost = ({ post, comments }) => {
   // }, [post]);
 
   return (
-    <Layout title="Post" description="">
-      <div>
+    <Layout title={post.title} description={post.description}>
+      <>
+        <Link href="/" className={styles.goBack}>
+          <h3> {"<"} Go back</h3>
+        </Link>
         <div>
-          <div>
+          <div className={styles.header}>
             <div className={styles.title}>
               <h2>{post.title}</h2> <p>Author:</p>
               <h5>{post.author}</h5>
@@ -39,8 +57,9 @@ export const SinglePost = ({ post, comments }) => {
         <div className={styles.commentsWrapper}>
           <div className={styles.commentsContent}>
             <h4>Comments</h4>
+            <CommentForm loading={false} error="" onSubmit={onCreateComment} />
             {rootComments?.length ? (
-              <div>
+              <div className={styles.comments}>
                 <CommentsList comments={rootComments} />
               </div>
             ) : (
@@ -48,7 +67,7 @@ export const SinglePost = ({ post, comments }) => {
             )}
           </div>
         </div>
-      </div>
+      </>
     </Layout>
   );
 };
@@ -58,11 +77,10 @@ type ContextParams = {
 };
 
 type PageProps = {
-  // !! This any should be of type Post Interface
-  blogPost: null | any;
+  blogPost: IPost;
 };
 
-export const getStaticProps: GetStaticProps<PageProps, ContextParams> = async (context) => {
+export const getStaticProps: GetStaticProps<PageProps, ContextParams, PreviewData> = async (context) => {
   const {
     params: { slug },
   } = context;
@@ -70,13 +88,13 @@ export const getStaticProps: GetStaticProps<PageProps, ContextParams> = async (c
   if (slug) {
     try {
       const res = await fetch(`${API_URL}/posts/${slug}`);
-      const commentsRes = await fetch(`${API_URL}/posts/${slug}/comments`);
+      const commentsRes = await fetch(`${API_URL}/posts/${slug}/comments?_sort=date&_order=desc`);
 
       const post = await res.json();
       const comments = await commentsRes.json();
 
       return {
-        props: { post: post, comments: comments },
+        props: { post: post, commentsFromAPI: comments || [] },
       };
     } catch (error) {
       console.log("error ", error);

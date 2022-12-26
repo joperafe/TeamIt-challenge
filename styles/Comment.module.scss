@@ -1,9 +1,31 @@
-.title {
+.wrapper {
+  border: solid;
+  // border-left: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  border-color: #2f3c7e;
+  margin: 5px;
+  // margin: 5px 0 5px 5px;
+  padding: 5px 0 5px 5px;
+}
+
+.header {
   display: flex;
-  align-items: baseline;
+  justify-content: space-between;
+  padding-left: 10px;
+  .headerLeft {
+    :global(p) {
+      margin: 0;
+      font-size: small;
+    }
+  }
+}
+
+.content {
+  // display: flex;
+  // align-items: baseline;
   :global(p) {
-    margin: 0 5px 0 30px;
-    font-size: small;
+    margin: 0 5px 0 20px;
   }
 }
 
@@ -22,4 +44,14 @@
 
 .nestedComment {
   padding-left: 30px;
+}
+
+.buttonWrapper {
+  display: flex;
+  button {
+    border: unset;
+    cursor: pointer;
+    margin: 10px;
+    background-color: unset;
+  }
 }

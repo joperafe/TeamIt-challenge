@@ -1,7 +1,8 @@
 import Link from "next/link";
 import styles from "../../../styles/PostCard.module.scss";
+import { IPost } from "../../../types/interfaces";
 
-export const PostCard = ({ post }) => {
+export const PostCard = ({ post }: { post: IPost }) => {
   return (
     <div key={post.id} className={styles.wrapper}>
       <div className={styles.header}>

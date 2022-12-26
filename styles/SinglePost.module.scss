@@ -1,3 +1,16 @@
+.goBack {
+  display: flex;
+  width: fit-content;
+  h3 {
+    margin-bottom: 2vh;
+    color: #2f3c7e;
+  }
+}
+
+.header {
+  padding-bottom: 20px;
+}
+
 .title {
   display: flex;
   align-items: baseline;
@@ -8,14 +21,18 @@
 }
 
 .commentsWrapper {
-  // width: 80vw;
   display: flex;
   justify-content: center;
   padding-top: 50px;
-  // border-top: double;
 }
 .commentsContent {
   width: 80vw;
   padding: 30px 100px;
   border-top: double;
+}
+
+.comments {
+  background-color: rgb(128 128 128 / 10%);
+  padding: 20px;
+  border-radius: 5px;
 }
