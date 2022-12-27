@@ -21,6 +21,9 @@
 
 .list {
   align-self: center;
+  > div {
+    width: 100%;
+  }
 }
 
 .grid {

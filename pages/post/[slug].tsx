@@ -48,7 +48,7 @@ export const SinglePost = ({
         <Link href="/" className={styles.goBack}>
           <h3> {"<"} Go back</h3>
         </Link>
-        <div>
+        <>
           <div className={styles.header}>
             <div className={styles.title}>
               <h2>{post.title}</h2> <p>Author:</p>
@@ -56,9 +56,9 @@ export const SinglePost = ({
             </div>
             <p>{post.publish_date}</p>
           </div>
-          {/* ! Careful with this ! */}
+          {/* ! Careful with this. Might cause security issues ! */}
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
-        </div>
+        </>
         <div className={styles.commentsWrapper}>
           <div className={styles.commentsContent}>
             <h4>Comments</h4>
