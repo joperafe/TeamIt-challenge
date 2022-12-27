@@ -5,9 +5,9 @@ import Link from "next/link";
 export const Header = () => {
   return (
     <header className={styles.header}>
-      <div>
+      <>
         <Link href="/">Blog</Link>
-      </div>
+      </>
     </header>
   );
 };

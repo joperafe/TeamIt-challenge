@@ -1,7 +1,7 @@
 import Layout from "../components/Layout";
 import styles from "../styles/404.module.scss";
 
-export default function Home() {
+export const PageNotFound: React.FC = () => {
   return (
     <Layout title="Page Not Found">
       <div className={styles.error}>
@@ -10,4 +10,6 @@ export default function Home() {
       </div>
     </Layout>
   );
-}
+};
+
+export default PageNotFound;

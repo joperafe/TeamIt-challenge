@@ -32,7 +32,7 @@ export const updateComment = ({ content, id }: { content: string; id: number }) 
   });
 };
 
-// @ Not requested
+// ! Not requested
 export const deleteComment = ({ id }: { id: number }) => {
   return request(`${API_URL}/comments/${id}`, {
     method: "DELETE",

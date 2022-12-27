@@ -4,12 +4,12 @@ import { IComment } from "../../../types/interfaces";
 
 const MemoizedComment = React.memo(Comment);
 
-export const CommentsList = ({ comments }: { comments: IComment[] }) => {
+export const CommentsList: React.FC<{ comments: IComment[] }> = ({ comments }) => {
   return (
     <>
       {comments.map((comment: IComment) => (
         <div key={comment.id}>
-          <MemoizedComment {...comment} />
+          <MemoizedComment comment={comment} />
         </div>
       ))}
     </>

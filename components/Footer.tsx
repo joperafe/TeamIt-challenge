@@ -5,7 +5,7 @@ export const Footer = () => {
   return (
     <footer className={styles.footer}>
       <p>
-        <b>Copyright &copy; TeamIt 2022</b>
+        <b aria-label="Copyright &copy; TeamIt 2022">Copyright &copy; TeamIt 2022</b>
       </p>
     </footer>
   );
