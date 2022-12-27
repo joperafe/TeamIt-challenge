@@ -1,10 +1,8 @@
 .wrapper {
-  border: solid;
   // border-left: solid;
-  border-width: 1px;
+  border: 1px solid #2f3c7e;
   border-radius: 3px;
-  border-color: #2f3c7e;
-  margin: 5px;
+  margin: 5px 5px 5px 0;
   // margin: 5px 0 5px 5px;
   padding: 5px 0 5px 5px;
 }
@@ -22,19 +20,15 @@
 }
 
 .content {
-  // display: flex;
-  // align-items: baseline;
   :global(p) {
     margin: 0 5px 0 20px;
   }
 }
 
 .commentsWrapper {
-  // width: 80vw;
   display: flex;
   justify-content: center;
   padding-top: 50px;
-  // border-top: double;
 }
 .commentsContent {
   width: 80vw;

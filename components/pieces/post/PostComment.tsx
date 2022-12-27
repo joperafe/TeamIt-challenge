@@ -1,7 +1,7 @@
-import Link from "next/link";
 import styles from "../../../styles/PostComment.module.scss";
+import { IComment } from "../../../types/interfaces";
 
-export const PostComment = ({ comment, children }) => {
+export const PostComment = ({ comment, children }: { comment: IComment; children: React.ReactNode }) => {
   return (
     <div key={comment.id} className={styles.wrapper}>
       <div className={styles.header}>
@@ -11,12 +11,6 @@ export const PostComment = ({ comment, children }) => {
       <div className={styles.content}>
         <p className={styles.description}>{comment.content}</p>
       </div>
-
-      {/* <div className={styles.buttonWrapper}>
-        <Link href={`/comment/${comment.id}`}>
-          <div className={styles.button}>Read more</div>
-        </Link>
-      </div> */}
       <div>{children}</div>
     </div>
   );

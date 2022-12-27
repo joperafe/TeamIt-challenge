@@ -9,20 +9,18 @@ export interface IPost {
 }
 
 export interface IPostList {
-  length: any;
-  map(arg0: (post: any) => JSX.Element): import("react").ReactNode;
   posts: Array<IPost>;
 }
 
 export interface IComment {
   id: number;
   postId: number;
-  parent_id: string;
+  parent_id?: number;
   user: string;
   date: string;
   content: string;
 }
 
 export interface ICommentList {
-  posts: Array<IComment>;
+  comments: Array<IComment>;
 }

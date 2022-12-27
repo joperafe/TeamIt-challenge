@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { usePost } from "../../../context/PostContext";
 import CommentsList from "./CommentsList";
 import styles from "../../../styles/Comment.module.scss";
@@ -13,7 +13,7 @@ import reply from "../../../public/reply.png";
 
 export const Comment = (comment: IComment) => {
   const { post, comments, setComments, getCommentReplies } = usePost();
-  const replies = getCommentReplies(comment.id);
+  const replies = useMemo(() => getCommentReplies(comment.id), [comment.id, getCommentReplies]);
 
   const [isReplying, setIsReplying] = useState(false);
   const createCommentFn = useAsyncFn(createComment);
@@ -23,41 +23,47 @@ export const Comment = (comment: IComment) => {
 
   const deleteCommentFn = useAsyncFn(deleteComment);
 
-  const onCreateComment = (newComment: string) => {
-    return createCommentFn
-      .execute({
-        postId: post.id,
-        content: newComment,
-        parentId: comment.id,
-      })
-      .then((res: Object) => {
-        setComments([res, ...comments]);
-        setIsReplying(false);
-      });
-  };
+  const onCreateComment = useCallback(
+    (newComment: string) => {
+      return createCommentFn
+        .execute({
+          postId: post.id,
+          content: newComment,
+          parentId: comment.id,
+        })
+        .then((res: Object) => {
+          setComments([res, ...comments]);
+          setIsReplying(false);
+        });
+    },
+    [comment.id, comments, createCommentFn, post.id, setComments]
+  );
 
-  const onUpdateComment = (newComment: string) => {
-    return updateCommentFn
-      .execute({
-        id: comment.id,
-        content: newComment,
-      })
-      .then((res: IComment) => {
-        setComments(comments.map((comm: IComment) => (comm.id === res.id ? { ...comm, content: res.content } : comm)));
-        setIsEditing(false);
-      });
-  };
+  const onUpdateComment = useCallback(
+    (newComment: string) => {
+      return updateCommentFn
+        .execute({
+          id: comment.id,
+          content: newComment,
+        })
+        .then((res: IComment) => {
+          setComments(
+            comments.map((comm: IComment) => (comm.id === res.id ? { ...comm, content: res.content } : comm))
+          );
+          setIsEditing(false);
+        });
+    },
+    [comment.id, comments, setComments, updateCommentFn]
+  );
 
-  const handleDelete = () => {};
-
-  const onDeleteComment = () => {
+  const onDeleteComment = useCallback(() => {
     const toDelete = confirm("Deleting an entry is a permanent action, are you sure?");
     if (toDelete) {
       return deleteCommentFn.execute({ id: comment.id }).then(() => {
         setComments(comments.filter((localComment: IComment) => localComment.id !== comment.id));
       });
     }
-  };
+  }, [comment.id, comments, deleteCommentFn, setComments]);
 
   return (
     <div key={comment.id} className={styles.wrapper}>

@@ -1,11 +1,13 @@
+import React from "react";
 import { Comment } from "./Comment";
-import styles from "../../../styles/CommentsList.module.scss";
-import { usePost } from "../../../context/PostContext";
+import { IComment } from "../../../types/interfaces";
 
-export const CommentsList = ({ comments }) => {
-  return comments.map((comment) => (
-    <div key={comment.id} className={styles.commentsList}>
-      <Comment {...comment} />
+const MemoizedComment = React.memo(Comment);
+
+export const CommentsList = ({ comments }: { comments: IComment[] }) => {
+  return comments.map((comment: IComment) => (
+    <div key={comment.id}>
+      <MemoizedComment {...comment} />
     </div>
   ));
 };

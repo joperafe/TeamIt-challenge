@@ -9,32 +9,31 @@ export const usePost = () => {
 
 const PostProvider = ({ children }: { children: React.ReactNode }) => {
   const [post, setPost] = useState<IPost>();
-  const [comments, setComments] = useState<any[]>([]);
-  const [rootComments, setRootComments] = useState<any[]>([]);
-  const [commentsByParentId, setCommentsByParentId] = useState<any[]>([]);
+  const [comments, setComments] = useState<IComment[]>([]);
+  const [rootComments, setRootComments] = useState<IComment[]>([]);
+  const [commentsByParentId, setCommentsByParentId] = useState<{ [parentId: number]: IComment[] }>([]);
 
   useEffect(() => {
-    if (comments) {
-      setRootComments(comments.filter((comment: IComment) => !comment.parent_id));
-    }
+    setRootComments(comments.filter((comment: IComment) => !comment.parent_id));
   }, [comments]);
 
   useEffect(() => {
-    const group: any = {};
+    const group: { [parentId: number]: IComment[] } = {};
     if (comments.length) {
       comments.forEach((comment: IComment) => {
-        group[comment.parent_id] ||= [];
-        group[comment.parent_id].push(comment);
+        if (comment.parent_id) {
+          if (!group[comment.parent_id]) {
+            group[comment.parent_id] ||= [];
+          }
+          group[comment.parent_id].push(comment);
+        }
       });
       setCommentsByParentId(group);
     }
   }, [comments]);
 
   const getCommentReplies = (parent_id: number) => {
-    if (commentsByParentId) {
-      return commentsByParentId[parent_id];
-    }
-    return;
+    return commentsByParentId[parent_id];
   };
 
   return (

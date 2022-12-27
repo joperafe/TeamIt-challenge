@@ -10,7 +10,7 @@ export const request = async (url: string, options?: Object | undefined) => {
   try {
     const res = await api(url, options);
     return res.data;
-  } catch (error) {
-    return await Promise.reject(error?.response?.data?.message ?? "Error");
+  } catch (error: any) {
+    return await Promise.reject(error.response?.data?.message ?? "Error");
   }
 };

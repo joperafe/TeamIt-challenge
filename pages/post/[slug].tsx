@@ -1,6 +1,6 @@
-import { GetStaticPaths, GetStaticProps, PreviewData } from "next";
+import { GetStaticPaths, GetStaticProps, GetStaticPropsContext, PreviewData } from "next";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import Layout from "../../components/Layout";
 import CommentForm from "../../components/pieces/post/CommentForm";
 import CommentsList from "../../components/pieces/post/CommentsList";
@@ -11,31 +11,36 @@ import { createComment } from "../../services/comments";
 import styles from "../../styles/SinglePost.module.scss";
 import { ICommentList, IPost } from "../../types/interfaces";
 
-export const SinglePost = ({ post, commentsFromAPI }: { post: IPost; commentsFromAPI: ICommentList }) => {
+export const SinglePost = ({
+  post,
+  commentsFromAPI,
+  errorFromAPI,
+}: {
+  post: IPost;
+  commentsFromAPI: ICommentList;
+  error?: Object | undefined;
+}) => {
   const { setPost, comments, setComments, rootComments } = usePost();
   const { loading, error, execute: createCommentFn } = useAsyncFn(createComment);
 
   useEffect(() => {
     post && setPost(post);
     setComments(commentsFromAPI);
-  }, [post, commentsFromAPI]);
+  }, [post, commentsFromAPI, setPost, setComments]);
 
-  const onCreateComment = (newComment: string) => {
-    return createCommentFn({
-      postId: post.id,
-      content: newComment,
-    }).then((res: Object) => {
-      setComments([res, ...comments]);
-    });
-  };
+  const onCreateComment = useCallback(
+    (newComment: string) => {
+      return createComment({
+        postId: post.id,
+        content: newComment,
+      }).then((res: Object) => {
+        setComments([res, ...comments]);
+      });
+    },
+    [post.id, comments, setComments]
+  );
 
-  // @ Changing the url to show the slug instead of id
-  // ! When reloading is trying to fetch post by slug...
-  // const router = useRouter();
-  // useEffect(() => {
-  //   router.push(`/post/${post.slug}`, undefined, { shallow: true });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [post]);
+  const memoizedCommentsList = useMemo(() => <CommentsList comments={rootComments} />, [rootComments]);
 
   return (
     <Layout title={post.title} description={post.description}>
@@ -59,9 +64,7 @@ export const SinglePost = ({ post, commentsFromAPI }: { post: IPost; commentsFro
             <h4>Comments</h4>
             <CommentForm loading={false} error="" onSubmit={onCreateComment} />
             {rootComments?.length ? (
-              <div className={styles.comments}>
-                <CommentsList comments={rootComments} />
-              </div>
+              <div className={styles.comments}>{memoizedCommentsList}</div>
             ) : (
               <p>No comments to display</p>
             )}
@@ -77,27 +80,26 @@ type ContextParams = {
 };
 
 type PageProps = {
-  blogPost: IPost;
+  post: IPost;
 };
 
-export const getStaticProps: GetStaticProps<PageProps, ContextParams, PreviewData> = async (context) => {
+export const getStaticProps: GetStaticProps<PageProps, ContextParams, PreviewData> = async (
+  context: GetStaticPropsContext<ContextParams>
+) => {
   const {
     params: { slug },
   } = context;
 
   if (slug) {
     try {
-      const res = await fetch(`${API_URL}/posts/${slug}`);
-      const commentsRes = await fetch(`${API_URL}/posts/${slug}/comments?_sort=date&_order=desc`);
-
+      const res = await fetch(`${API_URL}/posts/${slug}?_embed=comments`);
       const post = await res.json();
-      const comments = await commentsRes.json();
 
       return {
-        props: { post: post, commentsFromAPI: comments || [] },
+        props: { post: post, commentsFromAPI: post.comments || [] },
       };
     } catch (error) {
-      console.log("error ", error);
+      return { notFound: true, props: { errorFromAPI: error } };
     }
   }
   return {

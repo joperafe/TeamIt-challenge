@@ -1,12 +1,13 @@
-import { Inter } from "@next/font/google";
 import Layout from "../components/Layout";
-
-const inter = Inter({ subsets: ["latin"] });
+import styles from "../styles/404.module.scss";
 
 export default function Home() {
   return (
-    <Layout title="Page Not Found" description="">
-      <div>Page not found</div>
+    <Layout title="Page Not Found">
+      <div className={styles.error}>
+        <h1>404</h1>
+        <h2>Page not found</h2>
+      </div>
     </Layout>
   );
 }

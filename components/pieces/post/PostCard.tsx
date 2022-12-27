@@ -1,8 +1,9 @@
+import React from "react";
 import Link from "next/link";
 import styles from "../../../styles/PostCard.module.scss";
 import { IPost } from "../../../types/interfaces";
 
-export const PostCard = ({ post }: { post: IPost }) => {
+export const PostCard = React.memo(({ post }: { post: IPost }) => {
   return (
     <div key={post.id} className={styles.wrapper}>
       <div className={styles.header}>
@@ -21,6 +22,8 @@ export const PostCard = ({ post }: { post: IPost }) => {
       </div>
     </div>
   );
-};
+});
+
+PostCard.displayName = "PostCard";
 
 export default PostCard;

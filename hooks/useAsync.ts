@@ -19,15 +19,15 @@ const useAsyncInternal = (func: Function, dependencies: string[], initialLoading
   const [error, setError] = useState<any>();
   const [value, setValue] = useState<any>();
 
-  const execute = useCallback((...params) => {
+  const execute = useCallback((...params: any) => {
     setLoading(true);
     return func(...params)
-      .then((data) => {
+      .then((data: any) => {
         setValue(data);
         setError(undefined);
         return data;
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setError(error);
         setValue(undefined);
         return Promise.reject(error);

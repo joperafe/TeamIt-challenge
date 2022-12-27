@@ -8,7 +8,7 @@ export const createComment = ({
 }: {
   postId: number;
   content: string;
-  parentId: number | null;
+  parentId?: number | null;
 }) => {
   // ! Should do something with the user
   const user = "Unknown";

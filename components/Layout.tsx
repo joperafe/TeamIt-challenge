@@ -1,16 +1,13 @@
 import Head from "next/head";
-import { Inter } from "@next/font/google";
 import styles from "../styles/Layout.module.scss";
 import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
-const inter = Inter({ subsets: ["latin"] });
-
 type LayoutProps = {
   title: string;
-  description: string;
-  children: JSX.Element;
+  description?: string;
+  children: React.ReactNode;
 };
 
 export const Layout: React.FC<LayoutProps> = ({ title, description, children }) => {
