@@ -17,7 +17,7 @@ export const PostCard = React.memo(({ post }: { post: IPost }) => {
 
       <div className={styles.buttonWrapper}>
         <Link href={`/post/${post.id}`}>
-          <div className={styles.button}>Read more</div>
+          <div className={styles.button}>Read Post</div>
         </Link>
       </div>
     </div>

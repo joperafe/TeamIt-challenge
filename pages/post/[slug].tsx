@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext, PreviewData } from "next";
 import Link from "next/link";
+import { ParsedUrlQuery } from "querystring";
 import { useCallback, useEffect, useMemo } from "react";
 import Layout from "../../components/Layout";
 import CommentForm from "../../components/pieces/post/CommentForm";
@@ -18,7 +19,7 @@ export const SinglePost = ({
 }: {
   post: IPost;
   commentsFromAPI: ICommentList;
-  error?: Object | undefined;
+  errorFromAPI?: Object | undefined;
 }) => {
   const { setPost, comments, setComments, rootComments } = usePost();
   const { loading, error, execute: createCommentFn } = useAsyncFn(createComment);
@@ -75,20 +76,12 @@ export const SinglePost = ({
   );
 };
 
-type ContextParams = {
+interface IParams extends ParsedUrlQuery {
   slug: string;
-};
+}
 
-type PageProps = {
-  post: IPost;
-};
-
-export const getStaticProps: GetStaticProps<PageProps, ContextParams, PreviewData> = async (
-  context: GetStaticPropsContext<ContextParams>
-) => {
-  const {
-    params: { slug },
-  } = context;
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { slug } = context.params as IParams;
 
   if (slug) {
     try {

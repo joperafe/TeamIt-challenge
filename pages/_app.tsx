@@ -20,6 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
     router.events.on("routeChangeComplete", handleComplete);
     router.events.on("routeChangeError", handleComplete);
   }, [router]);
+  
   return (
     <PostProvider>
       {pageLoading && <Loader />}

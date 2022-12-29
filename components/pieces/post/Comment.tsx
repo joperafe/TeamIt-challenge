@@ -57,8 +57,8 @@ export const Comment: React.FC<{ comment: IComment }> = ({ comment }) => {
   );
 
   const onDeleteComment = useCallback(() => {
-    const toDelete = confirm("Deleting an entry is a permanent action, are you sure?");
-    if (toDelete) {
+    const confirmDelete = confirm("Deleting a comment is a permanent action, are you sure?");
+    if (confirmDelete) {
       return deleteCommentFn.execute({ id: comment.id }).then(() => {
         setComments(comments.filter((localComment: IComment) => localComment.id !== comment.id));
       });
