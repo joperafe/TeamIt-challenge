@@ -1,24 +1,49 @@
-.wrapper {
-  h2 {
-    padding: 0 0 0 5vw;
-  }
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 .actionsBtn {
-  display: flex;
-  justify-content: space-between;
+  padding-right: 10vw;
+}
+
+.iconBtn {
+  width: fit-content;
+  float: right;
+  cursor: pointer;
+}
+
+.list {
+  width: 100%;
   align-items: center;
-  padding: 0 10vw 20px 0;
+  display: flex;
+  flex-direction: column;
+  > div {
+    width: 90%;
+    margin: 20px;
+    height: 300px;
+  }
+}
+
+.grid {
+  display: flex;
+  justify-content: center;
+  flex-flow: wrap;
+}
+
+.emptyList {
+  padding-top: 20vh;
+  text-align: center;
 }
 
 .addPostBtn {
   align-items: center;
-  background-color: #2f3c7e;
-  border: 1px solid #2f3c7e;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 0.25rem;
   box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
   box-sizing: border-box;
-  color: #ffffff;
+  color: rgba(0, 0, 0, 0.85);
   cursor: pointer;
   display: inline-flex;
   font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;

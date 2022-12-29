@@ -11,7 +11,8 @@ import pencil from "../../../public/pencil.png";
 import trash from "../../../public/trash.png";
 import reply from "../../../public/reply.png";
 
-export const Comment: React.FC<{ comment: IComment }> = ({ comment }) => {
+// export const Comment: React.FC<{ comment: IComment }> = ({ comment }) => {
+export const Comment = ({ comment }: { comment: IComment }) => {
   const { post, comments, setComments, getCommentReplies } = usePost();
   const replies = useMemo(() => getCommentReplies(comment.id), [comment.id, getCommentReplies]);
 

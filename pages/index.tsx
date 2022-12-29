@@ -1,46 +1,63 @@
-import { useCallback } from "react";
-import Image from "next/image";
+import { useState, useEffect, useCallback } from "react";
 import styles from "../styles/Home.module.scss";
 import Layout from "../components/Layout";
 import { API_URL } from "../config";
-import { useState } from "react";
-import PostCard from "../components/pieces/post/PostCard";
 import { IPost } from "../types/interfaces";
-import listView from "../public/listView.png";
-import gridView from "../public/gridView.png";
 import { GetServerSideProps } from "next";
+import { PostsList } from "../components/pieces/post/PostsList";
+import PostModal from "../components/pieces/post/PostModal";
+import InputSearch from "../components/pieces/InputSearch";
 
 export const Home: React.FC<{ posts: IPost[] }> = ({ posts }) => {
-  // @ View will define the type of posts display
-  const [view, setView] = useState({ src: listView, type: "list" });
+  const [postsToShow, setPostsToShow] = useState<IPost[]>([]);
+  const [showPostModal, setShowPostModal] = useState(false);
+  // @ State for the search bar
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // @ Function to handle the change of posts display from list or grid
-  const handleChangeView = useCallback(() => {
-    setView(view.type === "list" ? { src: gridView, type: "grid" } : { src: listView, type: "list" });
-  }, [view.type]);
+  useEffect(() => {
+    if (posts) {
+      setPostsToShow(posts);
+    }
+  }, [posts]);
+
+  useEffect(() => {
+    if (posts) {
+      const filteredPosts = posts.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+      setPostsToShow(filteredPosts);
+    }
+  }, [posts, searchTerm]);
+
+  const handleshowPostModal = useCallback(() => {
+    console.log("on create psot");
+    setShowPostModal(!showPostModal);
+  }, [showPostModal]);
+
+  const handleOnClose = useCallback(() => {
+    setShowPostModal(false);
+  }, [setShowPostModal]);
+
+  const handleNewPostSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      console.log("submit");
+      setPostsToShow([...postsToShow]);
+      handleOnClose();
+    },
+    [postsToShow, handleOnClose]
+  );
 
   return (
     <Layout title="Blog Posts" description="Blog Posts">
       <div className={styles.wrapper}>
-        <h2>Blog Posts</h2>
-        {posts.length ? (
-          <div className={styles.contentWrapper}>
-            <div className={styles.icon}>
-              <div onClick={handleChangeView} className={styles.iconBtn}>
-                <Image src={view.src} alt="icon" width={30} height={30} />
-              </div>
-            </div>
-            <div className={view.type === "list" ? styles.grid : styles.list}>
-              {posts.map((post) => (
-                <PostCard key={post.id} post={post} />
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className={styles.emptyList}>
-            <h3>No posts to be shown</h3>
-          </div>
-        )}
+        <div className={styles.actionsBtn}>
+          <h2>Blog Posts</h2>
+          <InputSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <button className={styles.addPostBtn} onClick={handleshowPostModal}>
+            Create Post
+          </button>
+        </div>
+        <PostsList posts={postsToShow} />
+        {showPostModal && <PostModal onClose={handleOnClose} handleSubmit={handleNewPostSubmit} />}
       </div>
     </Layout>
   );
