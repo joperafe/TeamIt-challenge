@@ -47,9 +47,7 @@ export const Home: React.FC<{ posts: IPost[] }> = ({ posts }) => {
   }, [setShowPostModal]);
 
   const handleNewPostSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>, state: IFormState) => {
-      event.preventDefault();
-
+    (state: IFormState) => {
       if (state) {
         const description = `${state.content.split(".")[0]}.`;
         const slug = convertTitleToSlug(state.title);

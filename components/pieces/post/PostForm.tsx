@@ -1,16 +1,19 @@
+import { useCallback } from "react";
 import styles from "../../../styles/PostForm.module.scss";
 import { useReducer } from "react";
+import isEmpty from "../../../utils/isEmpty";
 
 interface IFormState {
   title: string;
   author: string;
   content: string;
+  error: boolean;
 }
 
 interface IUpdateFieldAction {
   type: "updateField";
   field: keyof IFormState;
-  value: string;
+  value: string | boolean;
 }
 
 type IFormAction = IUpdateFieldAction;
@@ -19,6 +22,8 @@ const initialState: IFormState = {
   title: "",
   author: "",
   content: "",
+  // @ Error will be true when the user tries to submit an empty form
+  error: false,
 };
 
 const reducer = (state: IFormState, action: IFormAction): IFormState => {
@@ -33,11 +38,7 @@ const reducer = (state: IFormState, action: IFormAction): IFormState => {
   }
 };
 
-const PostForm = ({
-  handleSubmit,
-}: {
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>, state: IFormState) => void;
-}) => {
+const PostForm = ({ handleSubmit }: { handleSubmit: (state: IFormState) => void }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -48,16 +49,37 @@ const PostForm = ({
     });
   };
 
+  const onSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      if (!isEmpty(state.title) && !isEmpty(state.author) && !isEmpty(state.content)) {
+        handleSubmit(state);
+      }
+      dispatch({
+        type: "updateField",
+        field: "error",
+        value: true,
+      });
+    },
+    [handleSubmit, state]
+  );
+
   return (
-    <form className={styles.form} onSubmit={(event) => handleSubmit(event, state)}>
-      <label htmlFor="title">Title:</label>
-      <input type="text" id="title" name="title" value={state.title} onChange={handleChange} />
+    <form className={styles.form} onSubmit={onSubmit}>
+      <div className={isEmpty(state.title) && state.error ? styles.empty : ""}>
+        <label htmlFor="title">Title:</label>
+        <input type="text" id="title" name="title" value={state.title} onChange={handleChange} />
+      </div>
       <br />
-      <label htmlFor="author">Author:</label>
-      <input type="text" id="author" name="author" value={state.author} onChange={handleChange} />
+      <div className={isEmpty(state.author) && state.error ? styles.empty : ""}>
+        <label htmlFor="author">Author:</label>
+        <input type="text" id="author" name="author" value={state.author} onChange={handleChange} />
+      </div>
       <br />
-      <label htmlFor="content">Content:</label>
-      <textarea id="content" name="content" value={state.content} onChange={handleChange} />
+      <div className={isEmpty(state.content) && state.error ? styles.empty : ""}>
+        <label htmlFor="content">Content:</label>
+        <textarea id="content" name="content" value={state.content} onChange={handleChange} />
+      </div>
       <br />
       <button type="submit">Create Post</button>
     </form>

@@ -28,4 +28,17 @@
     border: none;
     border-radius: 4px;
   }
+  div {
+    display: grid;
+  }
+  .empty {
+    color: red;
+    input,
+    textarea {
+      border: 1px solid red;
+    }
+    :focus {
+      outline-color: red;
+    }
+  }
 }

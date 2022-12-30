@@ -49,26 +49,28 @@ export const SinglePost = ({
         <Link href="/" className={styles.goBack}>
           <h3> {"<"} Go back</h3>
         </Link>
-        <>
-          <div className={styles.header}>
-            <div className={styles.title}>
-              <h2>{post.title}</h2> <p>Author:</p>
-              <h5>{post.author}</h5>
+        <div className={styles.wrapper}>
+          <>
+            <div className={styles.header}>
+              <div className={styles.title}>
+                <h2>{post.title}</h2> <p>Author:</p>
+                <h5>{post.author}</h5>
+              </div>
+              <p>{post.publish_date}</p>
             </div>
-            <p>{post.publish_date}</p>
-          </div>
-          {/* ! Careful with this. Might cause security issues ! */}
-          <div dangerouslySetInnerHTML={{ __html: post.content }} />
-        </>
-        <div className={styles.commentsWrapper}>
-          <div className={styles.commentsContent}>
-            <h4>Comments</h4>
-            <CommentForm loading={false} error="" onSubmit={onCreateComment} />
-            {rootComments?.length ? (
-              <div className={styles.comments}>{memoizedCommentsList}</div>
-            ) : (
-              <p>No comments to display</p>
-            )}
+            {/* ! Careful with this. Might cause security issues ! */}
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          </>
+          <div className={styles.commentsWrapper}>
+            <div className={styles.commentsContent}>
+              <h4>Comments</h4>
+              <CommentForm loading={false} error="" onSubmit={onCreateComment} />
+              {rootComments?.length ? (
+                <div className={styles.comments}>{memoizedCommentsList}</div>
+              ) : (
+                <p>No comments to display</p>
+              )}
+            </div>
           </div>
         </div>
       </>
