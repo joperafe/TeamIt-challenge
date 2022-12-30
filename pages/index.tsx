@@ -7,12 +7,23 @@ import { GetServerSideProps } from "next";
 import { PostsList } from "../components/pieces/post/PostsList";
 import PostModal from "../components/pieces/post/PostModal";
 import InputSearch from "../components/pieces/InputSearch";
+import { convertTitleToSlug } from "../utils/convertTitleToSlug";
+import { useAsyncFn } from "../hooks/useAsync";
+import { createPost } from "../services/posts";
+
+interface IFormState {
+  title: string;
+  author: string;
+  content: string;
+}
 
 export const Home: React.FC<{ posts: IPost[] }> = ({ posts }) => {
   const [postsToShow, setPostsToShow] = useState<IPost[]>([]);
   const [showPostModal, setShowPostModal] = useState(false);
   // @ State for the search bar
   const [searchTerm, setSearchTerm] = useState("");
+
+  const createPostFn = useAsyncFn(createPost);
 
   useEffect(() => {
     if (posts) {
@@ -28,22 +39,32 @@ export const Home: React.FC<{ posts: IPost[] }> = ({ posts }) => {
   }, [posts, searchTerm]);
 
   const handleshowPostModal = useCallback(() => {
-    console.log("on create psot");
     setShowPostModal(!showPostModal);
   }, [showPostModal]);
 
-  const handleOnClose = useCallback(() => {
+  const handleCloseModal = useCallback(() => {
     setShowPostModal(false);
   }, [setShowPostModal]);
 
   const handleNewPostSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
+    (event: React.FormEvent<HTMLFormElement>, state: IFormState) => {
       event.preventDefault();
-      console.log("submit");
-      setPostsToShow([...postsToShow]);
-      handleOnClose();
+
+      if (state) {
+        const description = `${state.content.split(".")[0]}.`;
+        const slug = convertTitleToSlug(state.title);
+
+        return createPostFn
+          .execute({
+            post: { ...state, content: `<p>${state.content}</p>`, description: description, slug: slug },
+          })
+          .then((res: IPost) => {
+            setPostsToShow([res, ...postsToShow]);
+            handleCloseModal();
+          });
+      }
     },
-    [postsToShow, handleOnClose]
+    [createPostFn, handleCloseModal, postsToShow]
   );
 
   return (
@@ -57,7 +78,7 @@ export const Home: React.FC<{ posts: IPost[] }> = ({ posts }) => {
           </button>
         </div>
         <PostsList posts={postsToShow} />
-        {showPostModal && <PostModal onClose={handleOnClose} handleSubmit={handleNewPostSubmit} />}
+        {showPostModal && <PostModal onClose={handleCloseModal} handleSubmit={handleNewPostSubmit} />}
       </div>
     </Layout>
   );

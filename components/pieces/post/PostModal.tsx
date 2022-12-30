@@ -6,7 +6,7 @@ export const PostModal = ({
   handleSubmit,
 }: {
   onClose: () => void;
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>, formState: any) => void;
 }) => {
   return (
     <div className={styles.modal}>

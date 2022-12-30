@@ -1,27 +1,27 @@
 import styles from "../../../styles/PostForm.module.scss";
 import { useReducer } from "react";
 
-interface FormState {
+interface IFormState {
   title: string;
   author: string;
   content: string;
 }
 
-interface UpdateFieldAction {
+interface IUpdateFieldAction {
   type: "updateField";
-  field: keyof FormState;
+  field: keyof IFormState;
   value: string;
 }
 
-type FormAction = UpdateFieldAction;
+type IFormAction = IUpdateFieldAction;
 
-const initialState: FormState = {
+const initialState: IFormState = {
   title: "",
   author: "",
   content: "",
 };
 
-const reducer = (state: FormState, action: FormAction): FormState => {
+const reducer = (state: IFormState, action: IFormAction): IFormState => {
   switch (action.type) {
     case "updateField":
       return {
@@ -33,25 +33,23 @@ const reducer = (state: FormState, action: FormAction): FormState => {
   }
 };
 
-const PostForm = ({ handleSubmit }: { handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void }) => {
+const PostForm = ({
+  handleSubmit,
+}: {
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>, state: IFormState) => void;
+}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     dispatch({
       type: "updateField",
-      field: event.target.name as keyof FormState,
+      field: event.target.name as keyof IFormState,
       value: event.target.value,
     });
   };
 
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   // Dispatch an action to create a new post with the form data
-  //   console.log("state ", state);
-  // };
-
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={(event) => handleSubmit(event, state)}>
       <label htmlFor="title">Title:</label>
       <input type="text" id="title" name="title" value={state.title} onChange={handleChange} />
       <br />

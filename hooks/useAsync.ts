@@ -15,7 +15,7 @@ export const useAsyncFn = (func: Function, dependencies = []) => {
 };
 
 const useAsyncInternal = (func: Function, dependencies: string[], initialLoading = false) => {
-  const [loading, setLoading] = useState<any>(initialLoading);
+  const [loading, setLoading] = useState<boolean>(initialLoading);
   const [error, setError] = useState<any>();
   const [value, setValue] = useState<any>();
 
