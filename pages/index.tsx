@@ -86,7 +86,8 @@ export const getServerSideProps: GetServerSideProps<{ posts: IPost[] }> = async 
   const res = await fetch(`${API_URL}/posts?_sort=publish_date&_order=desc`);
   const posts = await res.json();
 
-  return { props: { posts } };
+  // return { props: { posts } };
+  return { props: { posts: [] } };
 };
 
 export default Home;
