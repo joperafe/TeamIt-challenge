@@ -54,7 +54,12 @@ export const Home: React.FC<{ posts: IPost[] }> = ({ posts }) => {
 
         return createPostFn
           .execute({
-            post: { ...state, content: `<p>${state.content}</p>`, description: description, slug: slug },
+            post: {
+              ...state,
+              content: `<p>${state.content}</p>`,
+              description: description,
+              slug: slug,
+            },
           })
           .then((res: IPost) => {
             setPostsToShow([res, ...postsToShow]);

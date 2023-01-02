@@ -37,23 +37,17 @@
   touch-action: manipulation;
   vertical-align: baseline;
   width: auto;
-}
-
-.addPostBtn:hover,
-.addPostBtn:focus {
-  border-color: rgba(0, 0, 0, 0.15);
-  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
-  color: rgba(0, 0, 0, 0.65);
-}
-
-.addPostBtn:hover {
-  transform: translateY(-1px);
-}
-
-.addPostBtn:active {
-  background-color: #f0f0f1;
-  border-color: rgba(0, 0, 0, 0.15);
-  box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
-  color: rgba(0, 0, 0, 0.65);
-  transform: translateY(0);
+  &:hover,
+  &:focus {
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    color: #a7a7a7;
+  }
+  &:active {
+    background-color: #f0f0f1;
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+    color: #a7a7a7;
+    transform: translateY(0);
+  }
 }

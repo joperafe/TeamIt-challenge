@@ -1,7 +1,7 @@
 .wrapper {
   border-radius: 5px;
   width: 300px;
-  height: 220px;
+  height: 250px;
   border-width: 0;
   margin: 10px;
   position: relative;
@@ -12,18 +12,20 @@
 }
 
 .header {
-  background-color: #8499b182;
+  background-color: #152d8552;
   padding: 10px 15px;
   border-radius: 5px 5px 0 0;
   border-width: 0;
+  color: #2a2a2a;
   p {
     margin: 0;
     font-size: smaller;
+    font-weight: 600;
   }
 }
 
 .content {
-  padding: 10px;
+  padding: 10px 15px;
 }
 
 // @ Showing only 2 lines in the description
@@ -37,16 +39,25 @@
 }
 
 .buttonWrapper {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  margin: 20px;
-  div {
+  margin: 15px;
+  a {
+    margin: inherit;
     color: #2f3c7e;
+    position: absolute;
+    right: 0;
+    bottom: 0;
     &:hover {
       cursor: pointer;
       color: #26347a;
       font-weight: bold;
     }
+  }
+  b {
+    margin: inherit;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    cursor: context-menu;
+    color: #374172d1;
   }
 }

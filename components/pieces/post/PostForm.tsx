@@ -22,7 +22,7 @@ const initialState: IFormState = {
   title: "",
   author: "",
   content: "",
-  // @ Error will be true when the user tries to submit an empty form
+  // @ Error will be set to true when the user tries to submit an empty form
   error: false,
 };
 

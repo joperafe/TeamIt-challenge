@@ -1,29 +1,39 @@
-import React from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import Link from "next/link";
 import styles from "../../../styles/PostCard.module.scss";
 import { IPost } from "../../../types/interfaces";
 
-export const PostCard = React.memo(({ post }: { post: IPost }) => {
+export const PostCard = ({ post }: { post: IPost }) => {
+  const { id, title, author, description, publish_date } = post;
+
+  // @ Day difference since publish date until now()
+  const datediff = useCallback(() => {
+    const diffMili = new Date() - new Date(publish_date);
+
+    return Math.floor(diffMili / (1000 * 60 * 60 * 24));
+  }, [publish_date]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const dayCount = useMemo(() => datediff(), [publish_date]);
+
   return (
-    <div key={post.id} className={styles.wrapper}>
+    <div key={id} className={styles.wrapper}>
       <div className={styles.header}>
-        <h3>{post.title}</h3>
-        <p>{post.publish_date}</p>
+        <h3>{title}</h3>
+        <p>{publish_date}</p>
       </div>
       <div className={styles.content}>
-        <p className={styles.description}>{post.description}</p>
-        <h5>{post.author}</h5>
+        <p className={styles.description}>{description}</p>
+        <h5>{author}</h5>
       </div>
-
       <div className={styles.buttonWrapper}>
-        <Link href={`/post/${post.id}`}>
+        {dayCount ? <b>{dayCount} days ago</b> : null}
+        <Link href={`/post/${id}`}>
           <div className={styles.button}>Read Post</div>
         </Link>
       </div>
     </div>
   );
-});
+};
 
-PostCard.displayName = "PostCard";
-
-export default PostCard;
+export default memo(PostCard);

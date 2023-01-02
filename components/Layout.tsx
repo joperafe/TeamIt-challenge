@@ -20,7 +20,9 @@ export const Layout: React.FC<LayoutProps> = ({ title, description, children }) 
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <main className={styles.container}>{children}</main>
+      <main className={styles.container}>
+        <section className={styles.mainSection}>{children}</section>
+      </main>
       <Footer />
     </div>
   );
