@@ -1,0 +1,20 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  div > button {
+    border-radius: 3px;
+    border-color: transparent;
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    margin: 15px 1px 0;
+    text-decoration: none;
+    &:hover:not(.active) {
+      background-color: #545454b7;
+    }
+  }
+  .active {
+    background-color: #545454;
+    color: white;
+  }
+}

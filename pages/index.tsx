@@ -10,12 +10,17 @@ import InputSearch from "../components/pieces/InputSearch";
 import { convertTitleToSlug } from "../utils/convertTitleToSlug";
 import { useAsyncFn } from "../hooks/useAsync";
 import { createPost } from "../services/posts";
+import usePagination from "../hooks/usePagination";
+import Pagination from "../components/pieces/Pagination";
 
 interface IFormState {
   title: string;
   author: string;
   content: string;
 }
+
+// @ Number of posts per page
+const ITEMS_PER_PAGE: number = 15;
 
 export const Home: React.FC<{ posts: IPost[] }> = ({ posts }) => {
   const [postsToShow, setPostsToShow] = useState<IPost[]>([]);
@@ -37,6 +42,8 @@ export const Home: React.FC<{ posts: IPost[] }> = ({ posts }) => {
       setPostsToShow(filteredPosts);
     }
   }, [posts, searchTerm]);
+
+  const { currentPage, totalPages, paginatedItems, handlePageChange } = usePagination(postsToShow, ITEMS_PER_PAGE);
 
   const handleshowPostModal = useCallback(() => {
     setShowPostModal(!showPostModal);
@@ -80,7 +87,15 @@ export const Home: React.FC<{ posts: IPost[] }> = ({ posts }) => {
             Create Post
           </button>
         </div>
-        <PostsList posts={postsToShow} />
+        <PostsList posts={paginatedItems} />
+        <>
+          <Pagination
+            itemsPerPage={ITEMS_PER_PAGE}
+            totalPages={totalPages}
+            handlePageChange={handlePageChange}
+            currentPage={currentPage}
+          />
+        </>
         {showPostModal && <PostModal onClose={handleCloseModal} handleSubmit={handleNewPostSubmit} />}
       </div>
     </Layout>
