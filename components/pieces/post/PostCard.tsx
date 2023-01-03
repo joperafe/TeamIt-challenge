@@ -8,7 +8,7 @@ export const PostCard = ({ post }: { post: IPost }) => {
 
   // @ Day difference since publish date until now()
   const datediff = useCallback(() => {
-    const diffMili = new Date() - new Date(publish_date);
+    const diffMili = new Date().valueOf() - new Date(publish_date).valueOf();
 
     return Math.floor(diffMili / (1000 * 60 * 60 * 24));
   }, [publish_date]);
