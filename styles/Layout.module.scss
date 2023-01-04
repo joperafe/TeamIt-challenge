@@ -1,9 +1,13 @@
 .wrapper {
+  display: grid;
   position: relative;
   min-height: 100vh;
   background-color: #fbfbfb;
 }
-.mainSection {
-  padding: 30px 90px 60px 100px;
+.mobile {
+  width: 600px;
+}
+.container {
+  padding-bottom: 100px;
   width: 100%;
 }

@@ -3,6 +3,7 @@ import styles from "../styles/Layout.module.scss";
 import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import useMobile from "../hooks/useMobile";
 
 type LayoutProps = {
   title: string;
@@ -11,8 +12,10 @@ type LayoutProps = {
 };
 
 export const Layout: React.FC<LayoutProps> = ({ title, description, children }) => {
+  const isMobile = useMobile();
+
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper}  ${isMobile ? styles.mobile : ""}`}>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
