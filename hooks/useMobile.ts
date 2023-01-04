@@ -8,6 +8,7 @@ export const useMobile = () => {
   }
   useEffect(() => {
     if (window) {
+      alert(window.innerWidth);
       setWidth(window.innerWidth);
     }
     window.addEventListener("resize", handleWindowSizeChange);
@@ -16,6 +17,8 @@ export const useMobile = () => {
     };
   }, []);
   const isMobile = width ? width <= 768 : false;
+  alert(width);
+  alert(isMobile);
 
   return isMobile;
 };
