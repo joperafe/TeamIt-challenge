@@ -15,7 +15,7 @@ export const useMobile = () => {
       window.removeEventListener("resize", handleWindowSizeChange);
     };
   }, []);
-  const isMobile = width <= 768;
+  const isMobile = width ? width <= 768 : false;
 
   return isMobile;
 };
