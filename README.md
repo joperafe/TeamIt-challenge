@@ -5,11 +5,13 @@ Welcome to the Blog App! This app allows users to create, view, edit, and delete
 ## Tech Stack
 
 - Next.js
-- Vercel for deployment
-- Heroku for the API
 - Sass
 - Axios
 - TypeScript
+- Vercel for app deployment
+- Render for API deployment
+
+The website is hosted in the following link: https://team-it-challenge.vercel.app/
 
 ## Local Development
 
@@ -29,4 +31,4 @@ To run tests, use the following command: `npm test`
 
 The app is deployed on Vercel. To deploy updates, push changes to the `master` branch. Vercel will automatically build and deploy the changes.
 
-The API is deployed on Heroku.
+The API is deployed on Render.
