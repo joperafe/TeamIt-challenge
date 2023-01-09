@@ -47,7 +47,7 @@ export const SinglePost = ({
     <Layout title={post.title} description={post.description}>
       <>
         <Link href="/" className={styles.goBack}>
-          <h3> {"<"} Go back</h3>
+          <h5> {"<"} Go back</h5>
         </Link>
         <div className={styles.wrapper}>
           <>

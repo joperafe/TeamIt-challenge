@@ -3,9 +3,10 @@
   position: relative;
   min-height: 100vh;
   background-color: #fbfbfb;
-  min-width: calc(900px + 10px);
+  // ! Must check the mobile version
+  // min-width: calc(900px + 10px);
 }
 .container {
-  padding-bottom: 100px;
+  padding-bottom: 150px;
   width: 100%;
 }
